@@ -6,7 +6,7 @@ import (
 	"github.com/filecoin-project/go-state-types/crypto"
 	"github.com/myxtype/filecoin-client/sigs"
 	"github.com/myxtype/filecoin-client/types"
-	// _ "github.com/myxtype/filecoin-client/sigs/bls"
+	_ "github.com/myxtype/filecoin-client/sigs/bls"
 	_ "github.com/myxtype/filecoin-client/sigs/secp"
 )
 

@@ -2,6 +2,7 @@ package filecoin
 
 import (
 	"context"
+	"fmt"
 	"github.com/filecoin-project/go-address"
 	"github.com/ipfs/go-cid"
 	"testing"
@@ -67,3 +68,71 @@ func TestClient_StateGetActor(t *testing.T) {
 
 	t.Log(nonce)
 }
+
+
+func TestClient_StateLookup(t *testing.T) {
+	c := testClient()
+	address.CurrentNetwork = address.Mainnet
+
+	id, err := c.StateLookUp(context.Background(), "f1tybjx2ri2khuugqpsc4f34vbvcb64gavhfgu6pq")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	t.Logf("%+v", id)
+}
+
+func TestClient_StateSectors(t *testing.T) {
+	c := testClient()
+	address.CurrentNetwork = address.Mainnet
+
+	secotrs, err := c.StateSectors(context.Background(), "f020436")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	for _,v:=range secotrs{
+		fmt.Println(v.SectorNumber)
+	}
+
+}
+
+func TestClient_StateListMiners(t *testing.T) {
+	c := testClient()
+	address.CurrentNetwork = address.Mainnet
+
+	res, err := c.StateListMiners(context.Background())
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	for _,v:=range res {
+		fmt.Println(v)
+	}
+
+}
+
+
+func TestClient_StateReplay(t *testing.T) {
+	c := testClient()
+	address.CurrentNetwork = address.Mainnet
+
+	cid,err:=cid.Parse("bafy2bzacebq2b7ltqct5prf6lqgaksmwlnl6phunujoko33wwqwrziyywldcm")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	res, err := c.StateReplay(context.Background(),nil,cid)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	fmt.Printf("%+v\n",res.Msg)
+	fmt.Println(string(res.Msg.Params))
+	fmt.Printf("%x",res.Msg.Params)
+}
+

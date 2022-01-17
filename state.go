@@ -3,6 +3,7 @@ package filecoin
 import (
 	"context"
 	"github.com/filecoin-project/go-address"
+	"github.com/filecoin-project/lotus/chain/actors/builtin/miner"
 	"github.com/ipfs/go-cid"
 	"github.com/myxtype/filecoin-client/types"
 )
@@ -30,3 +31,19 @@ func (c *Client) StateSearchMsg(ctx context.Context, msg cid.Cid) (*types.MsgLoo
 	var msgl *types.MsgLookup
 	return msgl, c.Request(ctx, c.FilecoinMethod("StateSearchMsg"), &msgl, msg)
 }
+
+func (c *Client) StateLookUp(ctx context.Context, addr string) (string, error) {
+	var actorId string
+	return actorId, c.Request(ctx, c.FilecoinMethod("StateLookupID"), &actorId, addr, nil)
+}
+
+func (c *Client) StateSectors(ctx context.Context, actorAddr string) ([]*miner.SectorOnChainInfo, error) {
+	var res []*miner.SectorOnChainInfo
+	return res, c.Request(ctx, c.FilecoinMethod("StateMinerSectors"), &res, actorAddr,nil, nil)
+}
+
+func (c *Client) StateListMiners(ctx context.Context) ([]address.Address, error) {
+	var res []address.Address
+	return res, c.Request(ctx, c.FilecoinMethod("StateListMiners"), &res, nil)
+}
+
